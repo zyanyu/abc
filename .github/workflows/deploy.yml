@@ -1,0 +1,26 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 触发构建的分支
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v3
+      
+    - name: Install and Build 🔧 # 安装依赖并构建站点
+      run: |
+        npm install
+        npm run build
+        
+    - name: Deploy 🚀
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./node_modules/.cache/vitepress/dist
+        commit_message: 'Deploy VitePress site'
